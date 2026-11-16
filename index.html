@@ -4,999 +4,879 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ravi Shankar — Solution Architect, Zurich</title>
-<meta name="description" content="Ravi Shankar — Solution Architect in Zurich. Azure, Databricks, Scala, Java Spring Boot, Python and production AI systems.">
+<meta name="description" content="Ravi Shankar — Solution Architect in Zurich. Azure, Databricks, Spring Boot and production AI systems for regulated environments.">
 <meta name="author" content="Ravi Shankar">
 <meta property="og:title" content="Ravi Shankar — Solution Architect, Zurich">
 <meta property="og:description" content="Solution architecture for data-heavy, regulated systems. Azure · Databricks · Spring Boot · production RAG.">
 <meta property="og:type" content="website">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23191713'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='15' fill='%23f4f1ea' text-anchor='middle'%3ERS%3C/text%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23ffffff'/%3E%3Crect x='9' y='7' width='3' height='18' fill='%23E60000'/%3E%3Crect x='14.5' y='7' width='3' height='18' fill='%23E60000'/%3E%3Crect x='20' y='7' width='3' height='18' fill='%23E60000'/%3E%3C/svg%3E">
 <style>
+  /* ─────────────────────────────────────────────────────────
+     Swiss / International Typographic Style.
+     One typeface: Helvetica Neue → Helvetica → Arial → Liberation.
+     No webfont, no serif, no mono, no gradient, no shadow.
+     Palette: UBS black (#000), white (#FFF), red (#E60000) — nothing else.
+     Grid: 12 columns, flush left, ragged right. Nothing centred.
+     ───────────────────────────────────────────────────────── */
+
   :root {
-    --paper: #f4f1ea;
-    --paper-2: #ece8de;
-    --ink: #191713;
-    --ink-soft: #55504a;
-    --ink-faint: #8a8279;
-    --rule: #d6d0c3;
-    --accent: #9d3b21;
-
-    --serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
-    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-    --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-
-    --gut: clamp(20px, 4vw, 56px);
-    --measure: 62ch;
+    --paper: #ffffff;
+    --ink: #000000;
+    --ink-2: #3a3a3a;
+    --ink-3: #767676;
+    --red: #E60000;
+    --rule: #d8d8d8;
+    --col: 24px;
+    --pad: clamp(16px, 3vw, 40px);
+    --sans: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
   }
 
   * { box-sizing: border-box; }
 
-  html { scroll-behavior: smooth; }
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    * { animation: none !important; transition: none !important; }
-  }
+  html { -webkit-text-size-adjust: 100%; }
 
   body {
     margin: 0;
     background: var(--paper);
     color: var(--ink);
     font-family: var(--sans);
-    font-weight: 400;
     font-size: 16px;
-    line-height: 1.62;
+    line-height: 1.45;
+    font-feature-settings: "kern" 1;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
 
   a { color: inherit; text-decoration: none; }
 
-  a:focus-visible,
-  button:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 3px;
-    border-radius: 1px;
-  }
+  a:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
 
   .skip {
     position: absolute;
     left: -9999px;
-    top: 0;
     background: var(--ink);
-    color: var(--paper);
-    padding: 10px 16px;
-    z-index: 50;
+    color: #fff;
+    padding: 12px 18px;
+    z-index: 99;
+    font-size: 12px;
   }
-  .skip:focus { left: 12px; top: 12px; }
+  .skip:focus { left: 0; top: 0; }
 
-  /* ── shell ───────────────────────────────────────────── */
-
-  .shell {
-    display: grid;
-    grid-template-columns: minmax(260px, 340px) minmax(0, 1fr);
-    gap: clamp(32px, 6vw, 96px);
-    max-width: 1280px;
+  .wrap {
+    padding: 0 var(--pad);
+    max-width: 1560px;
     margin: 0 auto;
-    padding: 0 var(--gut);
   }
 
-  @media (max-width: 860px) {
-    .shell { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  /* ── the 12-column grid ──────────────────────────────── */
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--col);
   }
 
-  /* ── identity column ─────────────────────────────────── */
+  .wide { grid-column: 1 / span 12; }
 
-  .identity {
-    position: sticky;
-    top: 0;
-    align-self: start;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: clamp(28px, 5vh, 64px) 0 clamp(24px, 4vh, 44px);
-  }
+  /* ── micro typography ────────────────────────────────── */
 
-  @media (max-width: 860px) {
-    .identity {
-      position: static;
-      height: auto;
-      padding: 34px 0 0;
-      gap: 18px;
-    }
-
-    .identity h1 { font-size: clamp(38px, 11vw, 52px); }
-
-    .index {
-      display: flex;
-      gap: 0;
-      margin-top: 22px;
-      border-top: 0;
-      border-bottom: 1px solid var(--rule);
-      overflow-x: auto;
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
-    }
-    .index::-webkit-scrollbar { display: none; }
-    .index li { border-bottom: 0; flex: 0 0 auto; }
-    .index li + li { margin-left: 22px; }
-    .index a { padding: 12px 0; white-space: nowrap; font-size: 13px; }
-    .index a .n { display: none; }
-
-    .side-foot { margin-top: 0; padding-bottom: 4px; }
-    .avail { display: none; }
-  }
-
-  .eyebrow {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.14em;
+  .kicker {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--ink-faint);
-    margin: 0 0 18px;
-  }
-
-  .identity h1 {
-    font-family: var(--serif);
-    font-weight: 400;
-    font-size: clamp(42px, 4.4vw, 60px);
-    line-height: 0.96;
-    letter-spacing: -0.015em;
-    margin: 0 0 14px;
-  }
-
-  .identity h1 span { display: block; }
-
-  .role {
-    font-size: 15px;
-    margin: 0 0 4px;
+    margin: 0;
     color: var(--ink);
   }
 
-  .role em {
-    font-style: normal;
-    color: var(--accent);
+  .kicker .num { color: var(--red); }
+
+  /* ── masthead ────────────────────────────────────────── */
+
+  .masthead {
+    border-bottom: 6px solid var(--ink);
+    padding-top: 14px;
   }
 
-  .loc {
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--ink-soft);
-    margin: 0;
-    letter-spacing: 0.02em;
-  }
-
-  .index {
-    margin: 36px 0 0;
-    padding: 0;
-    list-style: none;
-    border-top: 1px solid var(--rule);
-  }
-
-  .index li { border-bottom: 1px solid var(--rule); }
-
-  .index a {
+  .masthead .row {
     display: flex;
     align-items: baseline;
-    gap: 12px;
-    padding: 9px 0;
-    font-size: 13.5px;
-    color: var(--ink-soft);
-    transition: color .18s ease, padding-left .18s ease;
-  }
-
-  .index a .n {
-    font-family: var(--mono);
-    font-size: 10.5px;
-    color: var(--ink-faint);
-    letter-spacing: 0.08em;
-  }
-
-  .index a:hover { color: var(--ink); padding-left: 4px; }
-  .index a[aria-current="true"] { color: var(--ink); }
-  .index a[aria-current="true"] .n { color: var(--accent); }
-
-  .side-foot { margin-top: 32px; }
-
-  .links {
-    display: flex;
+    justify-content: space-between;
+    gap: 24px;
     flex-wrap: wrap;
-    gap: 6px 18px;
-    font-family: var(--mono);
-    font-size: 12px;
-    letter-spacing: 0.02em;
-    margin: 0 0 16px;
+    padding-bottom: 10px;
   }
 
-  .links a {
-    border-bottom: 1px solid var(--rule);
-    padding-bottom: 1px;
-    transition: border-color .18s ease, color .18s ease;
-  }
+  .ident { display: flex; align-items: center; gap: 10px; }
 
-  .links a:hover { color: var(--accent); border-color: var(--accent); }
+  /* three vertical strokes — a quiet nod to the keys,
+     not a reproduction of any mark */
+  .keys { display: flex; gap: 3px; flex: 0 0 auto; }
+  .keys i { display: block; width: 4px; height: 15px; background: var(--red); }
 
-  .avail {
-    font-family: var(--mono);
+  .ident .name { font-size: 13px; font-weight: 700; letter-spacing: -0.01em; }
+
+  .masthead nav {
+    display: flex;
+    gap: 22px;
     font-size: 11px;
-    line-height: 1.7;
-    color: var(--ink-faint);
-    letter-spacing: 0.02em;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    flex-wrap: wrap;
+  }
+
+  .masthead nav a:hover { color: var(--red); }
+
+  /* ── hero ────────────────────────────────────────────── */
+
+  .hero { padding: clamp(40px, 7vw, 84px) 0 0; }
+
+  .hero h1 {
+    font-size: clamp(44px, 9.8vw, 146px);
+    line-height: 0.84;
+    letter-spacing: -0.045em;
+    font-weight: 700;
     margin: 0;
   }
 
-  .avail b {
-    color: var(--ink-soft);
-    font-weight: 500;
+  .hero .role-line {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: clamp(18px, 2.4vw, 32px);
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--ink);
   }
 
-  /* ── main ────────────────────────────────────────────── */
+  .hero .role-line strong {
+    font-size: clamp(15px, 1.5vw, 19px);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
 
-  main { padding-bottom: 96px; }
+  .hero .facts {
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: var(--ink-2);
+    text-transform: uppercase;
+  }
 
-  @media (max-width: 860px) { main { padding-top: 40px; } }
+  .hero .facts span { white-space: nowrap; }
 
-  section { scroll-margin-top: 32px; }
+  .statement {
+    padding-top: clamp(28px, 4vw, 48px);
+    align-items: end;
+  }
+
+  .statement .claim {
+    grid-column: 1 / span 7;
+    font-size: clamp(19px, 2.05vw, 27px);
+    line-height: 1.26;
+    letter-spacing: -0.018em;
+    font-weight: 400;
+    margin: 0;
+  }
+
+  .statement .side {
+    grid-column: 9 / span 4;
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--ink-2);
+    margin: 0;
+  }
+
+  /* ── section frame ───────────────────────────────────── */
+
+  .sec {
+    margin-top: clamp(56px, 8vw, 108px);
+    border-top: 1px solid var(--ink);
+    padding-top: 12px;
+  }
 
   .sec-head {
     display: flex;
     align-items: baseline;
-    gap: 14px;
-    padding-top: clamp(40px, 7vh, 80px);
-    margin-bottom: 26px;
-  }
-
-  .sec-head .n {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--accent);
-    letter-spacing: 0.1em;
-    padding-top: 6px;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: clamp(24px, 3vw, 40px);
   }
 
   .sec-head h2 {
-    font-family: var(--mono);
-    font-weight: 500;
-    font-size: 11.5px;
+    font-size: 10px;
+    font-weight: 700;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     margin: 0;
-    color: var(--ink-soft);
   }
 
-  .sec-head::after {
-    content: "";
-    flex: 1;
-    height: 1px;
-    background: var(--rule);
-  }
+  .sec-head h2 .num { color: var(--red); margin-right: 10px; }
 
-  /* ── lede ────────────────────────────────────────────── */
-
-  .lede { padding-top: clamp(40px, 9vh, 104px); }
-
-  .lede p.statement {
-    font-family: var(--serif);
-    font-size: clamp(28px, 3.5vw, 46px);
-    line-height: 1.16;
-    letter-spacing: -0.012em;
-    margin: 0 0 30px;
-    max-width: 22ch;
-    text-wrap: balance;
-  }
-
-  .lede p.statement em { font-style: italic; color: var(--accent); }
-
-  .lede .copy {
-    max-width: var(--measure);
-    color: var(--ink-soft);
-    font-size: 16.5px;
-    font-weight: 300;
-    line-height: 1.72;
-    margin: 0;
-  }
-
-  .lede .copy strong { color: var(--ink); font-weight: 500; }
-
-  .rule-heavy {
-    height: 2px;
-    background: var(--ink);
-    margin-top: clamp(40px, 7vh, 72px);
-    opacity: .85;
-  }
-
-  /* ── work ────────────────────────────────────────────── */
-
-  .work {
-    border-bottom: 1px solid var(--rule);
-    padding: 30px 0 34px;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 18px;
-  }
-
-  .work:first-of-type { border-top: 1px solid var(--rule); }
-
-  .work-top {
-    display: flex;
-    align-items: baseline;
-    gap: 14px;
-    flex-wrap: wrap;
-  }
-
-  .work-index {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--ink-faint);
-    letter-spacing: 0.1em;
-    min-width: 26px;
-  }
-
-  .work h3 {
-    font-family: var(--serif);
-    font-weight: 400;
-    font-size: clamp(24px, 2.4vw, 32px);
-    line-height: 1.1;
-    margin: 0;
-    letter-spacing: -0.01em;
-    flex: 1 1 320px;
-  }
-
-  .work .where {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--ink-faint);
-    letter-spacing: 0.06em;
+  .sec-head .count {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--ink-3);
     text-transform: uppercase;
+  }
+
+  /* ── work rows ───────────────────────────────────────── */
+
+  .entry {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--col);
+    border-top: 1px solid var(--rule);
+    padding: 20px 0 24px;
+  }
+
+  .entry:first-of-type { border-top: 0; padding-top: 0; }
+
+  .entry .idx {
+    grid-column: 1 / span 1;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--red);
+    font-variant-numeric: tabular-nums;
+    padding-top: 4px;
+  }
+
+  .entry .headline { grid-column: 2 / span 6; }
+
+  .entry h3 {
+    font-size: clamp(20px, 2.1vw, 28px);
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    font-weight: 700;
+    margin: 0 0 4px;
+  }
+
+  .entry .sub {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin: 0;
+  }
+
+  .entry .detail {
+    grid-column: 2 / span 6;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink-2);
+    margin: 14px 0 0;
+    max-width: 58ch;
+  }
+
+  .entry .figures {
+    grid-column: 9 / span 4;
+    grid-row: 1 / span 3;
+    margin: 0;
+    align-self: start;
+    border-left: 1px solid var(--rule);
+    padding-left: var(--col);
+  }
+
+  .entry .figures div {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    border-bottom: 1px solid var(--rule);
+    padding: 5px 0;
+  }
+
+  .entry .figures div:last-child { border-bottom: 0; }
+
+  .entry .figures dt {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin: 0;
+    padding-top: 1px;
+  }
+
+  .entry .figures dd {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+    text-align: right;
     white-space: nowrap;
   }
 
-  .work .desc {
-    max-width: var(--measure);
-    margin: 0 0 0 40px;
-    color: var(--ink-soft);
-    font-size: 15.5px;
-    font-weight: 300;
-  }
-
-  @media (max-width: 620px) { .work .desc { margin-left: 0; } }
-
-  .figures {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0;
-    margin: 2px 0 0 40px;
-    border-top: 1px solid var(--rule);
-  }
-
-  @media (max-width: 620px) { .figures { margin-left: 0; } }
-
-  .figures > div {
-    padding: 12px 26px 4px 0;
-    margin-right: 26px;
-    border-right: 1px solid var(--rule);
-  }
-  .figures > div:last-child { border-right: 0; margin-right: 0; }
-
-  .figures dt {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-    margin: 0 0 2px;
-  }
-
-  .figures dd {
-    font-family: var(--mono);
-    font-size: 15px;
-    margin: 0;
-    color: var(--ink);
-    letter-spacing: -0.01em;
-  }
-
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin: 0 0 0 40px;
-    padding: 0;
-    list-style: none;
-  }
-
-  @media (max-width: 620px) { .tags { margin-left: 0; } }
-
-  .tags li {
-    font-family: var(--mono);
-    font-size: 10.5px;
+  .entry .stack {
+    grid-column: 2 / span 6;
+    font-size: 11px;
     letter-spacing: 0.05em;
-    color: var(--ink-soft);
-    border: 1px solid var(--rule);
-    border-radius: 2px;
-    padding: 2px 7px;
-    background: var(--paper-2);
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin: 14px 0 0;
   }
 
-  /* ── experience ──────────────────────────────────────── */
+  /* ── ledger (experience) ─────────────────────────────── */
 
-  .job {
+  .ledger { border-top: 1px solid var(--rule); }
+
+  .ledger .row {
     display: grid;
-    grid-template-columns: 132px minmax(0, 1fr);
-    gap: 24px;
-    padding: 24px 0;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--col);
     border-bottom: 1px solid var(--rule);
+    padding: 16px 0;
   }
 
-  .job:first-of-type { border-top: 1px solid var(--rule); }
-
-  @media (max-width: 620px) {
-    .job { grid-template-columns: 1fr; gap: 8px; }
+  .ledger .when {
+    grid-column: 1 / span 2;
+    font-size: 12px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+    padding-top: 2px;
   }
 
-  .job .when {
-    font-family: var(--mono);
-    font-size: 11.5px;
-    color: var(--ink-faint);
-    letter-spacing: 0.04em;
-    padding-top: 3px;
-  }
+  .ledger .what { grid-column: 3 / span 4; }
 
-  .job h3 {
-    font-size: 17px;
-    font-weight: 500;
+  .ledger .what h3 {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
     margin: 0 0 2px;
-    letter-spacing: -0.005em;
   }
 
-  .job .org {
-    font-family: var(--mono);
-    font-size: 11.5px;
-    color: var(--accent);
-    letter-spacing: 0.05em;
-    margin: 0 0 10px;
-  }
-
-  .job ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    max-width: var(--measure);
-  }
-
-  .job li {
-    position: relative;
-    padding-left: 16px;
-    margin-bottom: 5px;
-    font-size: 14.8px;
-    font-weight: 300;
-    color: var(--ink-soft);
-    line-height: 1.6;
-  }
-
-  .job li::before {
-    content: "—";
-    position: absolute;
-    left: 0;
-    color: var(--ink-faint);
-  }
-
-  /* ── stack ───────────────────────────────────────────── */
-
-  .stack-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-    gap: 1px;
-    background: var(--rule);
-    border: 1px solid var(--rule);
-  }
-
-  .stack-cell {
-    background: var(--paper);
-    padding: 20px 20px 22px;
-  }
-
-  .stack-cell h3 {
-    font-family: var(--mono);
-    font-weight: 500;
-    font-size: 10.5px;
-    letter-spacing: 0.13em;
+  .ledger .what p {
+    font-size: 11px;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--accent);
-    margin: 0 0 12px;
-  }
-
-  .stack-cell ul {
+    color: var(--ink-3);
     margin: 0;
-    padding: 0;
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px 0;
   }
 
-  .stack-cell li {
-    font-size: 14px;
-    font-weight: 300;
-    color: var(--ink-soft);
-    line-height: 1.55;
-    margin-right: 10px;
+  .ledger .how {
+    grid-column: 7 / span 6;
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--ink-2);
+    margin: 0;
   }
 
-  .stack-cell li.sep::after {
-    content: "·";
-    color: var(--ink-faint);
-    margin-left: 10px;
-  }
+  /* ── capability columns ──────────────────────────────── */
 
-  /* ── credentials ─────────────────────────────────────── */
-
-  .cred-grid {
+  .caps {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 34px 40px;
-    border-top: 1px solid var(--rule);
-    padding-top: 24px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: var(--col);
+    row-gap: 34px;
   }
 
-  .cred-grid h3 {
-    font-family: var(--mono);
-    font-weight: 500;
-    font-size: 10.5px;
-    letter-spacing: 0.13em;
+  .cap h3 {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--ink-faint);
-    margin: 0 0 12px;
+    margin: 0 0 8px;
+    padding-bottom: 7px;
+    border-bottom: 3px solid var(--red);
   }
 
-  .cred-grid ul { margin: 0; padding: 0; list-style: none; }
+  .cap ul { margin: 0; padding: 0; list-style: none; }
 
-  .cred-grid li {
-    font-size: 14.5px;
-    color: var(--ink-soft);
-    font-weight: 300;
-    line-height: 1.55;
-    margin-bottom: 8px;
+  .cap li {
+    font-size: 13.5px;
+    line-height: 1.45;
+    color: var(--ink-2);
+    border-bottom: 1px solid var(--rule);
+    padding: 5px 0;
   }
 
-  .cred-grid li span {
-    display: block;
-    font-family: var(--mono);
-    font-size: 10.5px;
-    color: var(--ink-faint);
-    letter-spacing: 0.04em;
-    margin-top: 1px;
+  .cap li:last-child { border-bottom: 0; }
+
+  /* ── credentials table ───────────────────────────────── */
+
+  .table { width: 100%; border-collapse: collapse; }
+
+  .table th {
+    text-align: left;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    padding: 0 0 8px;
+    border-bottom: 1px solid var(--ink);
+  }
+
+  .table th:last-child { text-align: right; }
+
+  .table td {
+    font-size: 13.5px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--rule);
+    color: var(--ink-2);
+    vertical-align: baseline;
+  }
+
+  .table td:first-child { color: var(--ink); font-weight: 700; padding-right: 16px; }
+
+  .table td.year {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
   }
 
   /* ── contact ─────────────────────────────────────────── */
 
   .contact {
-    margin-top: clamp(56px, 10vh, 110px);
-    border-top: 2px solid var(--ink);
-    padding-top: 34px;
+    margin-top: clamp(64px, 9vw, 120px);
+    background: var(--ink);
+    color: #fff;
+    padding: clamp(36px, 5vw, 64px) 0 clamp(24px, 3vw, 40px);
   }
+
+  .contact .kicker { color: #fff; }
+  .contact .kicker .num { color: var(--red); }
 
   .contact h2 {
-    font-family: var(--serif);
-    font-weight: 400;
-    font-size: clamp(30px, 4vw, 48px);
-    line-height: 1.05;
-    letter-spacing: -0.02em;
-    margin: 0 0 26px;
-    max-width: 18ch;
+    font-size: clamp(28px, 5.2vw, 74px);
+    line-height: 0.94;
+    letter-spacing: -0.04em;
+    font-weight: 700;
+    margin: 18px 0 0;
+    max-width: 20ch;
   }
 
-  .contact-lines {
+  .contact .lines {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 22px 40px;
-    margin: 0 0 34px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px 24px;
+    margin: clamp(30px, 4vw, 52px) 0 0;
+    border-top: 1px solid #333;
+    padding-top: 18px;
   }
 
-  .contact-lines dt {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.13em;
+  .contact dt {
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--ink-faint);
+    color: #999;
     margin: 0 0 3px;
   }
 
-  .contact-lines dd {
+  .contact dd {
     margin: 0;
-    font-size: 15.5px;
-    color: var(--ink);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
   }
 
-  .contact-lines dd a:hover { color: var(--accent); }
+  .contact a:hover { color: var(--red); }
 
   .colophon {
-    font-family: var(--mono);
-    font-size: 10.5px;
-    letter-spacing: 0.05em;
-    color: var(--ink-faint);
-    border-top: 1px solid var(--rule);
-    padding-top: 16px;
-    margin: 0;
     display: flex;
     justify-content: space-between;
     gap: 16px;
     flex-wrap: wrap;
+    margin: clamp(30px, 4vw, 48px) 0 0;
+    padding-top: 12px;
+    border-top: 1px solid #333;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #888;
   }
 
-  /* ── scroll reveal ───────────────────────────────────── */
+  /* ── responsive ──────────────────────────────────────── */
 
-  .reveal {
-    opacity: 0;
-    transform: translateY(10px);
-    transition: opacity .55s ease, transform .55s ease;
+  @media (max-width: 900px) {
+    :root { --col: 16px; }
+
+    .statement .claim,
+    .statement .side,
+    .entry .idx,
+    .entry .headline,
+    .entry .detail,
+    .entry .figures,
+    .entry .stack,
+    .ledger .when,
+    .ledger .what,
+    .ledger .how {
+      grid-column: 1 / -1;
+    }
+
+    .statement .claim { margin-bottom: 18px; }
+
+    .entry .idx { margin-bottom: 8px; }
+
+    .entry .figures {
+      grid-row: auto;
+      border-left: 0;
+      border-top: 1px solid var(--rule);
+      padding-left: 0;
+      margin-top: 16px;
+    }
+
+    .entry .figures div { padding: 6px 0; }
+
+    .ledger .row { row-gap: 8px; padding: 18px 0; }
+    .ledger .when { order: 2; color: var(--ink-3); }
+
+    .caps { grid-template-columns: 1fr 1fr; }
+
+    .masthead nav { gap: 14px; font-size: 10px; }
+    .hero .facts { gap: 14px; font-size: 11px; }
   }
 
-  .reveal.in { opacity: 1; transform: none; }
-
-  @media (prefers-reduced-motion: reduce) {
-    .reveal { opacity: 1; transform: none; }
+  @media (max-width: 560px) {
+    .caps { grid-template-columns: 1fr; row-gap: 26px; }
+    .entry h3 { font-size: 21px; }
+    .hero h1 { font-size: clamp(40px, 13vw, 64px); }
+    .table td, .table th { font-size: 12px; }
+    .masthead nav { gap: 11px; font-size: 9.5px; letter-spacing: 0.04em; }
   }
 
   /* ── print ───────────────────────────────────────────── */
 
   @media print {
-    :root { --paper: #fff; --ink: #000; --ink-soft: #222; }
-    .identity { position: static; height: auto; }
-    .shell { display: block; max-width: none; }
-    .index, .side-foot .links { display: none; }
-    .reveal { opacity: 1; transform: none; }
-    .work, .job { break-inside: avoid; }
+    @page { margin: 18mm 16mm; }
+    body { font-size: 10pt; }
+    .masthead nav { display: none; }
+    .contact { background: #fff; color: #000; margin-top: 18mm; }
+    .contact h2 { font-size: 26pt; }
+    .contact .lines, .colophon { border-color: #bbb; }
+    .contact dt, .colophon { color: #555; }
+    .entry, .ledger .row { break-inside: avoid; }
   }
 </style>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 
-<div class="shell">
+<div class="wrap">
 
-  <aside class="identity">
-    <div>
-      <p class="eyebrow">Portfolio / 2026</p>
-      <h1><span>Ravi</span><span>Shankar</span></h1>
-      <p class="role">Solution Architect — <em>Azure · Data · AI</em></p>
-      <p class="loc">Zurich, Switzerland</p>
-
+  <header class="masthead">
+    <div class="row">
+      <div class="ident">
+        <span class="keys" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="name">Ravi Shankar</span>
+      </div>
       <nav aria-label="Sections">
-        <ul class="index">
-          <li><a href="#profile"><span class="n">01</span> Profile</a></li>
-          <li><a href="#work"><span class="n">02</span> Selected work</a></li>
-          <li><a href="#experience"><span class="n">03</span> Experience</a></li>
-          <li><a href="#stack"><span class="n">04</span> Stack</a></li>
-          <li><a href="#credentials"><span class="n">05</span> Credentials</a></li>
-          <li><a href="#contact"><span class="n">06</span> Contact</a></li>
-        </ul>
+        <a href="#work">Work</a>
+        <a href="#experience">Experience</a>
+        <a href="#capabilities">Capabilities</a>
+        <a href="#credentials">Credentials</a>
+        <a href="#contact">Contact</a>
       </nav>
     </div>
-
-    <div class="side-foot">
-      <div class="links">
-        <a href="mailto:mail4ravi.s@gmail.com">Email</a>
-        <a href="https://www.linkedin.com/in/ravi4974" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="tel:+41779400192">+41 77 940 0192</a>
-      </div>
-      <p class="avail">
-        <b>Open to</b> AI Architect / Solution Architect roles<br>
-        Zurich · EU · Hybrid or remote · 2 months' notice
-      </p>
-    </div>
-  </aside>
+  </header>
 
   <main id="main">
 
-    <section id="profile" class="lede">
-      <p class="statement">I architect systems that hold up under real volume, real regulation, and real deadlines.</p>
-      <p class="copy">
-        Fourteen years in software, the last four as a <strong>Solution Architect at UBS</strong>, where I design
-        data-heavy platforms on Azure — Scala, Databricks and Delta at ten million rows a day — and the
-        microservice estates around them. I took a production RAG system from blank page to a thousand users in two
-        months, and I sit in front of the Architecture Review Board to defend the designs I ship.
-        <br><br>
-        I still write code. Architecture that nobody on the team can build is just a document.
-      </p>
-      <div class="rule-heavy" aria-hidden="true"></div>
+    <section class="hero">
+      <p class="kicker">Solution Architect · Zurich · Portfolio 2026</p>
+
+      <h1>Ravi<br>Shankar</h1>
+
+      <div class="role-line">
+        <strong>Azure · Databricks · Spring Boot · Production AI</strong>
+        <div class="facts">
+          <span>14 years</span>
+          <span>UBS, 2016–present</span>
+          <span>Open to Architect roles</span>
+        </div>
+      </div>
+
+      <div class="statement grid">
+        <p class="claim">I architect systems that hold up under real volume, real regulation and real deadlines — and I stay until they are built.</p>
+        <p class="side">
+          Data platforms at ten million rows a day. A production RAG system
+          from blank page to a thousand users in two months. Architectures
+          defended in front of the review board, then delivered by the teams
+          who own them. I still write the code.
+        </p>
+      </div>
     </section>
 
-    <section id="work">
-      <div class="sec-head"><span class="n">02</span><h2>Selected work</h2></div>
+    <section class="sec" id="work">
+      <div class="sec-head">
+        <h2><span class="num">01</span>Selected work</h2>
+        <span class="count">Four engagements</span>
+      </div>
 
-      <article class="work reveal">
-        <div class="work-top">
-          <span class="work-index">01</span>
-          <h3>Quotes &amp; Agreements — production RAG</h3>
-          <span class="where">UBS · In-house AI platform</span>
+      <article class="entry">
+        <div class="idx">01</div>
+        <div class="headline">
+          <h3>Quotes &amp; Agreements</h3>
+          <p class="sub">Production RAG · UBS in-house AI platform</p>
         </div>
-        <p class="desc">
-          A production retrieval-augmented generation system for quotes and agreements, designed and built from
-          scratch in two months on UBS's internal platform. LangGraph workflows handle planning, tool selection,
-          retries and fallbacks, state and memory, sub-agents and human approval. Guarded MCP tools wrap GitLab
-          APIs, with data-protection and prompt-injection defences in the request path and per-request accuracy
-          measured against a quality baseline.
+        <p class="detail">
+          Retrieval-augmented generation for quotes and agreements, designed
+          and built from scratch in two months. LangGraph workflows handle
+          planning, tool selection, retries and fallbacks, state and memory,
+          sub-agents and human approval. Guarded MCP tools wrap GitLab APIs;
+          data-protection and prompt-injection defences sit in the request
+          path, with accuracy measured per request against a quality baseline.
         </p>
         <dl class="figures">
           <div><dt>Users</dt><dd>1,000</dd></div>
-          <div><dt>Load</dt><dd>~100 req/day</dd></div>
+          <div><dt>Requests</dt><dd>~100 / day</dd></div>
           <div><dt>Saved</dt><dd>15 person-days</dd></div>
           <div><dt>Build</dt><dd>2 months</dd></div>
         </dl>
-        <ul class="tags">
-          <li>RAG</li><li>LangGraph</li><li>MCP</li><li>Prompt engineering</li>
-          <li>Human-in-the-loop</li><li>LLM evaluation</li><li>Security</li>
-        </ul>
+        <p class="stack">RAG · LangGraph · MCP · Prompt engineering · HITL · LLM evaluation</p>
       </article>
 
-      <article class="work reveal">
-        <div class="work-top">
-          <span class="work-index">02</span>
-          <h3>Cloud migration — five applications to Azure</h3>
-          <span class="where">UBS · 2022 – present</span>
+      <article class="entry">
+        <div class="idx">02</div>
+        <div class="headline">
+          <h3>Cloud migration, five applications</h3>
+          <p class="sub">Azure · UBS · 2022 – present</p>
         </div>
-        <p class="desc">
-          End-to-end architecture for moving on-premises applications onto Azure, presented and defended at the
-          Architecture Review Board. Spark and Delta pipelines carry the volume; containerised services run on
-          Kubernetes with the platform's cloud onboarding standards. Included performance tuning of the batch
-          workflows and hands-on guidance for the delivery teams through the cutover.
+        <p class="detail">
+          End-to-end architecture for moving on-premises applications to
+          Azure, presented and defended at the Architecture Review Board.
+          Spark and Delta pipelines carry the volume; containerised services
+          run on Kubernetes under the platform's cloud onboarding standards.
+          Included performance tuning of the batch workflows and hands-on
+          guidance for delivery teams through the cutover.
         </p>
         <dl class="figures">
           <div><dt>Applications</dt><dd>5</dd></div>
-          <div><dt>Throughput</dt><dd>10M rows/day</dd></div>
+          <div><dt>Throughput</dt><dd>10M rows / day</dd></div>
           <div><dt>Team</dt><dd>5 engineers</dd></div>
           <div><dt>Cadence</dt><dd>Daily</dd></div>
         </dl>
-        <ul class="tags">
-          <li>Azure</li><li>Scala</li><li>Databricks</li><li>Delta</li>
-          <li>Kubernetes</li><li>Docker</li><li>PySpark</li>
-        </ul>
+        <p class="stack">Azure · Scala · Databricks · Delta · Kubernetes · PySpark</p>
       </article>
 
-      <article class="work reveal">
-        <div class="work-top">
-          <span class="work-index">03</span>
+      <article class="entry">
+        <div class="idx">03</div>
+        <div class="headline">
           <h3>Business monitoring dashboard</h3>
-          <span class="where">UBS · 2018 – 2022</span>
+          <p class="sub">Java · Spring Boot · React · UBS · 2018 – 2022</p>
         </div>
-        <p class="desc">
-          A dashboard monitoring business-critical jobs, reports and packages across the estate — job status,
-          report delivery, application and database health, all with alerting. Designed the architecture for
-          concurrency and low latency, then led the developer, design and QA effort through delivery. Served a
-          thousand users on a system they checked every morning.
+        <p class="detail">
+          A dashboard monitoring business-critical jobs, reports and packages
+          across the estate — job status, report delivery, application and
+          database health, all with alerting. Designed for concurrency and low
+          latency, then led the developer, design and QA effort through
+          delivery to a thousand users who opened it every morning.
         </p>
         <dl class="figures">
           <div><dt>Users</dt><dd>1,000</dd></div>
-          <div><dt>Jobs watched</dt><dd>2,000</dd></div>
+          <div><dt>Jobs</dt><dd>2,000</dd></div>
           <div><dt>Throughput</dt><dd>1,200 QPS</dd></div>
           <div><dt>Latency</dt><dd>800 ms p95</dd></div>
         </dl>
-        <ul class="tags">
-          <li>Java</li><li>Spring Boot</li><li>React</li><li>System design</li><li>Alerting</li>
-        </ul>
+        <p class="stack">Java · Spring Boot · React · System design · Alerting</p>
       </article>
 
-      <article class="work reveal">
-        <div class="work-top">
-          <span class="work-index">04</span>
-          <h3>General Ledger — data warehouse components</h3>
-          <span class="where">Enterprise DWH · 2012 – 2018</span>
+      <article class="entry">
+        <div class="idx">04</div>
+        <div class="headline">
+          <h3>General Ledger, data warehouse</h3>
+          <p class="sub">Oracle · Unix · 2012 – 2018</p>
         </div>
-        <p class="desc">
-          Complex modules of a General Ledger platform on Unix and Oracle — Java components, PLSQL and shell
-          orchestration where the data had to be exactly right. Also where I learned to review code properly and
-          to mentor: cross-skilling the team was part of the job, not an extra.
+        <p class="detail">
+          Complex modules of a General Ledger platform on Unix and Oracle —
+          Java components, SQL and shell orchestration where the data had to
+          be exactly right. Also where I learned to review code properly, and
+          to treat cross-skilling the team as part of the job rather than an
+          extra.
         </p>
         <dl class="figures">
-          <div><dt>Domain</dt><dd>General Ledger</dd></div>
-          <div><dt>Stack</dt><dd>Oracle · Unix</dd></div>
+          <div><dt>Domain</dt><dd>Ledger</dd></div>
+          <div><dt>Platform</dt><dd>Oracle / Unix</dd></div>
+          <div><dt>Role</dt><dd>Developer</dd></div>
         </dl>
-        <ul class="tags">
-          <li>Java</li><li>Oracle SQL</li><li>Bash</li><li>Data warehousing</li><li>Mentoring</li>
-        </ul>
+        <p class="stack">Java · Oracle SQL · Bash · Data warehousing · Mentoring</p>
       </article>
     </section>
 
-    <section id="experience">
-      <div class="sec-head"><span class="n">03</span><h2>Experience</h2></div>
+    <section class="sec" id="experience">
+      <div class="sec-head">
+        <h2><span class="num">02</span>Experience</h2>
+        <span class="count">2012 — present</span>
+      </div>
 
-      <article class="job reveal">
-        <div class="when">2022 — present</div>
-        <div>
-          <h3>Solution Architect</h3>
-          <p class="org">UBS AG · Zurich</p>
-          <ul>
-            <li>Architect for cloud migration and data platforms; five applications, ten million rows a day.</li>
-            <li>Built the in-house AI platform's RAG capability from scratch to production in two months.</li>
-            <li>Set up cloud infrastructure for the UBS internal platform on microservices and Kubernetes as part of cloud onboarding.</li>
-            <li>Presented automation and efficiency proposals to UBS customers and the Architecture Review Board.</li>
-            <li>Led vulnerability mitigation and end-of-life technology migrations.</li>
-            <li>Conducted more than 200 technical interviews across frontend, backend and full-stack profiles.</li>
-          </ul>
+      <div class="ledger">
+        <div class="row">
+          <div class="when">2022 — now</div>
+          <div class="what">
+            <h3>Solution Architect</h3>
+            <p>UBS AG · Zurich</p>
+          </div>
+          <p class="how">
+            Architect for cloud migration and data platforms: five
+            applications, ten million rows a day. Built the in-house AI
+            platform's RAG capability to production. Set up microservice and
+            Kubernetes infrastructure during cloud onboarding. Presented
+            automation proposals to customers and the Architecture Review
+            Board. Ran more than 200 technical interviews across frontend,
+            backend and full-stack profiles.
+          </p>
         </div>
-      </article>
 
-      <article class="job reveal">
-        <div class="when">2016 — 2022</div>
-        <div>
-          <h3>Full Stack Developer</h3>
-          <p class="org">UBS AG · Zurich</p>
-          <ul>
-            <li>Built and maintained full-stack applications in Java Spring Boot and Python, with REST APIs designed for performance and security.</li>
-            <li>Cut daily delivery time from two hours to fifteen minutes through CI pipeline work — Git, GitLab CI, automated unit tests and SonarQube gates.</li>
-            <li>Reviewed code and mentored junior developers.</li>
-          </ul>
+        <div class="row">
+          <div class="when">2016 — 2022</div>
+          <div class="what">
+            <h3>Full Stack Developer</h3>
+            <p>UBS AG · Zurich</p>
+          </div>
+          <p class="how">
+            Full-stack applications in Java Spring Boot and Python, with REST
+            APIs designed for performance and security. Cut daily delivery
+            time from two hours to fifteen minutes through CI work — Git,
+            GitLab CI, automated tests and SonarQube gates. Reviewed code and
+            mentored junior developers.
+          </p>
         </div>
-      </article>
 
-      <article class="job reveal">
-        <div class="when">2012 — 2018</div>
-        <div>
-          <h3>Developer — General Ledger platform</h3>
-          <p class="org">Enterprise data warehouse</p>
-          <ul>
-            <li>Developed and maintained complex project modules in Java, Oracle SQL and Unix shell.</li>
-            <li>Mentored team members and drove cross-skilling; ran code reviews and continuous-improvement work.</li>
-          </ul>
+        <div class="row">
+          <div class="when">2012 — 2018</div>
+          <div class="what">
+            <h3>Developer, General Ledger</h3>
+            <p>Enterprise data warehouse</p>
+          </div>
+          <p class="how">
+            Complex modules in Java, Oracle SQL and Unix shell. Mentored team
+            members, drove cross-skilling, ran code reviews and
+            continuous-improvement work on a platform where correctness was
+            not negotiable.
+          </p>
         </div>
-      </article>
+      </div>
     </section>
 
-    <section id="stack">
-      <div class="sec-head"><span class="n">04</span><h2>Stack</h2></div>
+    <section class="sec" id="capabilities">
+      <div class="sec-head">
+        <h2><span class="num">03</span>Capabilities</h2>
+        <span class="count">Selected</span>
+      </div>
 
-      <div class="stack-grid">
-        <div class="stack-cell">
+      <div class="caps">
+        <div class="cap">
           <h3>Architecture</h3>
           <ul>
-            <li class="sep">System design</li><li class="sep">Microservices</li>
-            <li class="sep">Kubernetes</li><li>Stakeholder management</li>
+            <li>System design</li>
+            <li>Microservices</li>
+            <li>Kubernetes</li>
+            <li>Review board presentation</li>
+            <li>Stakeholder management</li>
           </ul>
         </div>
-        <div class="stack-cell">
-          <h3>Cloud &amp; platform</h3>
+        <div class="cap">
+          <h3>Cloud &amp; data</h3>
           <ul>
-            <li class="sep">Azure</li><li class="sep">Azure DevOps</li><li class="sep">Docker</li>
-            <li class="sep">Kubernetes</li><li class="sep">Terraform</li><li class="sep">Bicep</li>
-            <li class="sep">Landing zones</li><li>Entra ID</li>
+            <li>Azure, landing zones</li>
+            <li>Databricks, Spark, Delta</li>
+            <li>Docker, Terraform, Bicep</li>
+            <li>Oracle, SQL</li>
+            <li>Azure DevOps, GitLab CI</li>
           </ul>
         </div>
-        <div class="stack-cell">
-          <h3>Data</h3>
-          <ul>
-            <li class="sep">Databricks</li><li class="sep">Spark</li><li class="sep">Delta</li>
-            <li class="sep">Data engineering</li><li class="sep">Oracle</li><li>SQL</li>
-          </ul>
-        </div>
-        <div class="stack-cell">
+        <div class="cap">
           <h3>AI engineering</h3>
           <ul>
-            <li class="sep">RAG</li><li class="sep">LangGraph</li><li class="sep">LangChain</li>
-            <li class="sep">MCP</li><li class="sep">Tool calling</li><li class="sep">Prompt engineering</li>
-            <li class="sep">LLM evaluation</li><li>Agentic workflows</li>
+            <li>RAG, LLM evaluation</li>
+            <li>LangGraph, LangChain</li>
+            <li>MCP, tool calling</li>
+            <li>Prompt engineering</li>
+            <li>Human-in-the-loop design</li>
           </ul>
         </div>
-        <div class="stack-cell">
+        <div class="cap">
           <h3>Languages</h3>
           <ul>
-            <li class="sep">Java</li><li class="sep">Python</li><li class="sep">Scala</li>
-            <li class="sep">TypeScript</li><li class="sep">JavaScript</li><li class="sep">SQL</li><li>Bash</li>
+            <li>Java, Python</li>
+            <li>Scala, SQL</li>
+            <li>TypeScript, JavaScript</li>
+            <li>Bash</li>
           </ul>
         </div>
-        <div class="stack-cell">
+        <div class="cap">
           <h3>Craft</h3>
           <ul>
-            <li class="sep">Spring Boot</li><li class="sep">React</li><li class="sep">REST</li>
-            <li class="sep">CI/CD</li><li class="sep">Automated testing</li>
-            <li class="sep">Security</li><li>Mentoring</li>
+            <li>Spring Boot, React</li>
+            <li>REST API design</li>
+            <li>Automated testing</li>
+            <li>Security, vulnerability mitigation</li>
+            <li>Mentoring, code review</li>
+          </ul>
+        </div>
+        <div class="cap">
+          <h3>Spoken</h3>
+          <ul>
+            <li>English — fluent</li>
+            <li>German — A1, learning</li>
           </ul>
         </div>
       </div>
     </section>
 
-    <section id="credentials">
-      <div class="sec-head"><span class="n">05</span><h2>Credentials</h2></div>
-
-      <div class="cred-grid">
-        <div>
-          <h3>Education</h3>
-          <ul>
-            <li>MSc Computer Science<span>BITS Pilani · 2016</span></li>
-            <li>BCA, MSIT<span>GGSIPU · 2012</span></li>
-          </ul>
-        </div>
-        <div>
-          <h3>Certifications</h3>
-          <ul>
-            <li>AZ-900 — Azure Fundamentals<span>Microsoft · 2020</span></li>
-            <li>Databricks Fundamentals<span>2022</span></li>
-          </ul>
-        </div>
-        <div>
-          <h3>Awards</h3>
-          <ul>
-            <li>Inspiring Performance, Europe<span>2019</span></li>
-            <li>Business Unit Award, Europe<span>2020</span></li>
-          </ul>
-        </div>
-        <div>
-          <h3>Languages</h3>
-          <ul>
-            <li>English<span>Fluent</span></li>
-            <li>German<span>A1 — learning</span></li>
-          </ul>
-        </div>
+    <section class="sec" id="credentials">
+      <div class="sec-head">
+        <h2><span class="num">04</span>Credentials</h2>
+        <span class="count">Education · certifications · awards</span>
       </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Credential</th>
+            <th>Institution</th>
+            <th>Year</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>MSc Computer Science</td><td>BITS Pilani</td><td class="year">2016</td></tr>
+          <tr><td>BCA, MSIT</td><td>GGSIPU</td><td class="year">2012</td></tr>
+          <tr><td>AZ-900, Azure Fundamentals</td><td>Microsoft</td><td class="year">2020</td></tr>
+          <tr><td>Databricks Fundamentals</td><td>Udemy</td><td class="year">2022</td></tr>
+          <tr><td>Inspiring Performance, Europe</td><td>Wipro</td><td class="year">2019</td></tr>
+          <tr><td>Business Unit Award, Europe</td><td>Organisation</td><td class="year">2020</td></tr>
+        </tbody>
+      </table>
     </section>
 
-    <section id="contact" class="contact">
-      <h2>Building something that needs a steady hand on the architecture?</h2>
-      <dl class="contact-lines">
-        <div>
-          <dt>Email</dt>
-          <dd><a href="mailto:mail4ravi.s@gmail.com">mail4ravi.s@gmail.com</a></dd>
+    <section class="contact" id="contact">
+      <div class="wrap">
+        <p class="kicker"><span class="num">05</span> Contact</p>
+        <h2>Systems that need a steady hand on the architecture.</h2>
+
+        <dl class="lines">
+          <div>
+            <dt>Email</dt>
+            <dd><a href="mailto:mail4ravi.s@gmail.com">mail4ravi.s@gmail.com</a></dd>
+          </div>
+          <div>
+            <dt>Phone</dt>
+            <dd><a href="tel:+41779400192">+41 77 940 0192</a></dd>
+          </div>
+          <div>
+            <dt>LinkedIn</dt>
+            <dd><a href="https://www.linkedin.com/in/ravi4974" target="_blank" rel="noopener">in/ravi4974</a></dd>
+          </div>
+          <div>
+            <dt>Based in</dt>
+            <dd>Zurich, Switzerland</dd>
+          </div>
+        </dl>
+
+        <div class="colophon">
+          <span>Ravi Shankar — Solution Architect</span>
+          <span>Open to AI Architect and Solution Architect roles · 2 months' notice</span>
         </div>
-        <div>
-          <dt>Phone</dt>
-          <dd><a href="tel:+41779400192">+41 77 940 0192</a></dd>
-        </div>
-        <div>
-          <dt>LinkedIn</dt>
-          <dd><a href="https://www.linkedin.com/in/ravi4974" target="_blank" rel="noopener">in/ravi4974</a></dd>
-        </div>
-        <div>
-          <dt>Based in</dt>
-          <dd>Zurich, Switzerland</dd>
-        </div>
-      </dl>
-      <p class="colophon">
-        <span>Ravi Shankar — Solution Architect</span>
-        <span>Built by hand. No template.</span>
-      </p>
+      </div>
     </section>
 
   </main>
 </div>
-
-<script>
-  (function () {
-    var links = Array.prototype.slice.call(document.querySelectorAll('.index a'));
-    var sections = links
-      .map(function (a) { return document.querySelector(a.getAttribute('href')); })
-      .filter(Boolean);
-
-    if ('IntersectionObserver' in window && sections.length) {
-      var visible = new Map();
-
-      var navObs = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) { visible.set(e.target.id, e.isIntersecting); });
-        var current = null;
-        sections.forEach(function (s) { if (visible.get(s.id)) current = s.id; });
-        links.forEach(function (a) {
-          var on = current && a.getAttribute('href') === '#' + current;
-          if (on) { a.setAttribute('aria-current', 'true'); }
-          else { a.removeAttribute('aria-current'); }
-        });
-      }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
-
-      sections.forEach(function (s) { navObs.observe(s); });
-
-      var revealObs = new IntersectionObserver(function (entries, obs) {
-        entries.forEach(function (e) {
-          if (e.isIntersecting) {
-            e.target.classList.add('in');
-            obs.unobserve(e.target);
-          }
-        });
-      }, { rootMargin: '0px 0px -12% 0px', threshold: 0.08 });
-
-      document.querySelectorAll('.reveal').forEach(function (el) { revealObs.observe(el); });
-    } else {
-      document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
-    }
-  })();
-</script>
 </body>
 </html>
