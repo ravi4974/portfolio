@@ -172,7 +172,7 @@
 
   .statement {
     padding-top: clamp(28px, 4vw, 48px);
-    align-items: end;
+    align-items: start;
   }
 
   .statement .claim {
@@ -190,6 +190,18 @@
     line-height: 1.5;
     color: var(--ink-2);
     margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .statement .portrait {
+    display: block;
+    width: 100%;
+    max-width: 224px;
+    height: auto;
+    margin-left: auto;
+    border: 1px solid var(--ink);
   }
 
   /* ── section frame ───────────────────────────────────── */
@@ -512,6 +524,8 @@
 
     .statement .claim { margin-bottom: 18px; }
 
+    .statement .portrait { margin-left: 0; }
+
     .entry .idx { margin-bottom: 8px; }
 
     .entry .figures {
@@ -594,12 +608,15 @@
 
       <div class="statement grid">
         <p class="claim">I architect systems that hold up under real volume, real regulation and real deadlines — and I stay until they are built.</p>
-        <p class="side">
-          Data platforms at ten million rows a day. A production RAG system
-          from blank page to a thousand users in two months. Architectures
-          defended in front of the review board, then delivered by the teams
-          who own them. I still write the code.
-        </p>
+        <div class="side">
+          <img class="portrait" src="assets/portrait.jpg" alt="Ravi Shankar" width="420" height="404" loading="eager">
+          <p>
+            Data platforms at ten million rows a day. A production RAG system
+            from blank page to a thousand users in two months. Architectures
+            defended in front of the review board, then delivered by the teams
+            who own them. I still write the code.
+          </p>
+        </div>
       </div>
     </section>
 
