@@ -7,8 +7,6 @@ Served by GitHub Pages.
 ## Structure
 
 - `index.html` — the whole site (markup, CSS and print styles inline)
-- `assets/portrait.jpg` — 420×404 black-and-white portrait used in the hero
-- `assets/portrait-sm.jpg` — 210×202 version for small contexts
 - `.nojekyll` — tells Pages to serve files as-is, skipping Jekyll
 
 ## Editing
@@ -38,15 +36,8 @@ Swiss / International Typographic Style with a UBS palette.
 - Grid: 12 columns, 24px gutter. Flush left, ragged right, nothing centred.
   Work rows run `index | headline | detail` against a `figures` ledger on the right.
 - Rules: 1px hairlines, a 6px masthead rule, 3px red underlines on capability heads.
-- Portrait: black-and-white, 1px black frame, right-aligned in the hero's last four columns.
+- No portrait for now — the hero relies on type and empty space.
 - Print stylesheet drops the nav and forces black on white.
-
-## Portrait provenance
-
-`assets/portrait.jpg` is cropped and graded from the public LinkedIn profile
-photo (200×200 source), converted to black and white with contrast lifted.
-It is a treated photograph, not a synthesised studio headshot — replace it with
-a proper shoot when one exists, keeping the same 420×404 crop.
 
 ## Local preview
 
